@@ -70,7 +70,7 @@ aws eks update-kubeconfig --region us-east-1 --name indexify-cluster
 ## 6. k8 Load Balancer Setup
 Our k8 configuration will provision a load balancer for us, we need to do a few steps in order for this to work.
 
-### Create AWSLoadBalancerControllerIAMPolicy Policy
+#### Create AWSLoadBalancerControllerIAMPolicy Policy
 download the policy
 ```bash
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
@@ -82,7 +82,7 @@ aws iam create-policy \
     --policy-document file://iam_policy.json
 ```
 
-### Create Service Account
+#### Create Service Account
 this command uses eksctl
 
 create service account, update this command to use your aws account number
@@ -126,7 +126,7 @@ kubectl describe serviceaccount aws-load-balancer-controller -n kube-system
 ```
 
 
-### Create OICD provider
+#### Create OICD provider
 determine OICD issuer ID for our cluster
 ```bash
 oidc_id=$(aws eks describe-cluster --name indexify-cluster --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
@@ -145,11 +145,11 @@ the following command will create oidc provider
 eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=indexify-cluster --approve
 ```
 
-### Configure Service account to assume an IAM role
+#### Configure Service account to assume an IAM role
 Any pods that are configured to use this service account can access any aws service the role has permission to access.
 
 
-<!-- ### Configure loadbalancer-controller-role
+<!-- #### Configure loadbalancer-controller-role
 update aws-permissions/loadbalancer-controller-role.json and add identity provider id
 
 
@@ -159,13 +159,13 @@ Add load-balancer-controller-policy to that role
 
 update k8/service-account.yml and update role-arn at the bottom to that of loadbalancer-controller-role -->
 
-### Add help repo
+#### Add help repo
 ```bash
 helm repo add eks https://aws.github.io/eks-charts
 helm repo update eks
 ```
 
-### Install AWS Load Balancer
+#### Install AWS Load Balancer
 ```bash
 kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
 
@@ -176,12 +176,12 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.name=aws-load-balancer-controller
 ```
 
-### Verify installation
+#### Verify installation
 ```bash
 kubectl get deployment -n kube-system aws-load-balancer-controller
 ```
 
-### Apply ingress
+#### Apply ingress
 ```bash
 kubectl apply -f k8/ingress.yml
 ```

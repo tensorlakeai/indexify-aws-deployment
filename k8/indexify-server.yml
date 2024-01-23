@@ -4,14 +4,12 @@ metadata:
   namespace: indexify
   name: indexify-service
 spec:
+  type: NodePort
+  ports:
+    - port: 8900
+      protocol: TCP
   selector:
     app: indexify
-  ports:
-    - name: indexify-http-port
-      protocol: TCP
-      port: 8900
-      targetPort: 8900
-  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,8 +36,6 @@ spec:
             - --config-path
             - ./config/indexify.yaml
           image: tensorlake/indexify
-          ports:
-            - containerPort: 8900
           volumeMounts:
             - mountPath: /indexify/config
               name: config

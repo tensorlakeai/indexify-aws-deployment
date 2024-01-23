@@ -19,6 +19,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-svc
+                name: indexify-service
                 port:
-                  number: 3000
+                  number: 8900
