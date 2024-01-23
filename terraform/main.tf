@@ -68,7 +68,7 @@ module "eks" {
 
   cluster_name                          = local.name
   cluster_endpoint_private_access       = true
-  cluster_endpoint_public_access        = false
+  cluster_endpoint_public_access        = true
   cluster_additional_security_group_ids = [aws_security_group.eks.id]
 
   cluster_addons = {
@@ -144,13 +144,22 @@ module "eks" {
   }
 }
 
+# s3
+resource "aws_s3_bucket" "example" {
+  bucket = var.indexify_s3_bucket_name
+
+  tags = {
+    Name = "Indexify data bucket"
+  }
+}
+
 # subnet groups
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = "${local.name}-db-subnet-group"
   subnet_ids = module.vpc.private_subnets
 
   tags = {
-    Name = "Hub DB Subnet Group"
+    Name = "Indexify DB Subnet Group"
   }
 }
 
@@ -220,4 +229,10 @@ resource "aws_security_group" "indexify_rds_sg" {
   tags = {
     Name = "RDS ${local.name} sg"
   }
+}
+
+# Outputs
+
+output "indexify_db_endpoint" {
+  value = aws_db_instance.indexify_db.endpoint
 }
