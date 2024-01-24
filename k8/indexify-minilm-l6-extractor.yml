@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: indexify
+  name: minilm-l6-extractor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minilm-l6-extractor
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minilm-l6-extractor
+    spec:
+      containers:
+        - name: minilm-l6-extractor
+          command: ["./indexify"]
+          args:
+            - extractor
+            - start
+            - --coordinator-addr
+            - coordinator-service.indexify.svc.cluster.local:8950
+            - --ingestion-addr
+            - indexify-service.indexify.svc.cluster.local:8900
+            - -c
+            - indexify.yaml
+          image: tensorlake/minilm-l6-extractor
+          env:
+            - name: AWS_SECRET_ACCESS_KEY
+              value: changeme
+            - name: AWS_ACCESS_KEY_ID
+              value: changeme
+      nodeSelector:
+        node_role: minilm_l6
+      restartPolicy: Always
