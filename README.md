@@ -1,4 +1,6 @@
 # Indexify-aws-deployment
+This document provides a comprehensive guide for setting up and configuring an eks infrastructure running using AWS, Terraform, and Kubernetes tools.
+
 ## 1. Install AWS + Terraform CLI
 [Install terraform cli docs](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
