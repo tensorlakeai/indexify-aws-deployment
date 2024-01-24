@@ -4,10 +4,11 @@ metadata:
   namespace: indexify
   name: indexify-service
 spec:
-  type: NodePort
   ports:
     - port: 8900
+      targetPort: 8900
       protocol: TCP
+  type: NodePort
   selector:
     app: indexify
 ---
@@ -15,7 +16,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: indexify
-  name: indexify
+  name: indexify-deployment
 spec:
   replicas: 1
   selector:
@@ -45,6 +46,8 @@ spec:
               value: iUGW39NaEl5HCdD78DZ00TcqCEPeYtxfZfu7k4LV
             - name: AWS_ACCESS_KEY_ID
               value: AKIA3FLD5UFGSLYRASMP
+          ports:
+            - containerPort: 8900
       nodeSelector:
         node_role: indexify
       restartPolicy: Always
