@@ -199,3 +199,47 @@ kubectl apply -f k8/namespace.yml
 kubectl apply -f k8/
 ```
 
+## 8. Tests
+The load balancer is provisioned with k8, go to your load balancers on the aws console and here you can find your dns name
+
+To make these tests easier let's set up an env variable with your dns name
+```bash
+export ALB_URL=....
+```
+
+#### Add some data
+```bash
+curl -v -X POST ${ALB_URL}/repositories/default/add_texts \
+-H "Content-Type: application/json" \
+-d '{"documents": [ 
+        {"text": "Indexify is amazing!"},
+        {"text": "Indexify is a retrieval service for LLM agents!"}, 
+        {"text": "Kevin Durant is the best basketball player in the world."}
+    ]}'
+```
+
+#### Bind our minilm extractor
+```bash
+curl -v -X POST ${ALB_URL}/repositories/default/extractor_bindings \
+-H "Content-Type: application/json" \
+-d '{
+        "extractor": "tensorlake/minilm-l6-extractor",
+        "name": "minil6"
+    }'
+```
+
+#### Get indexes
+```bash
+curl ${ALB_URL}/repositories/default/indexes
+```
+
+#### Perform a search
+```bash
+curl -v -X POST ${ALB_URL}/repositories/default/search \
+-H "Content-Type: application/json" \
+-d '{
+        "index": "minil6.embedding",
+        "query": "basketball", 
+        "k": 3
+    }'
+```

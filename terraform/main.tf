@@ -195,8 +195,8 @@ resource "aws_security_group" "eks" {
 
   ingress {
     description = "HTTP from ALB"
-    from_port   = 80
-    to_port     = 3000
+    from_port   = 8900
+    to_port     = 8900
     protocol    = "tcp"
     cidr_blocks = [local.vpc_cidr]
   }

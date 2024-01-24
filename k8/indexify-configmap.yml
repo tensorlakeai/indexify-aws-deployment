@@ -15,7 +15,7 @@ data:
     #coordinator_port: 8950
 
     # Database URL for storing document and memory
-    db_url: postgres://indexify:changeme@terraform-20240123205236469200000012.cbieoeiuurr3.us-east-1.rds.amazonaws.com/indexify
+    db_url: postgres://indexify:DATABASE_PASSWORD@DATABASE_URL/indexify #changeme
 
     # Address on which the coordinator is available for the API server
     # to query for executors
@@ -43,7 +43,7 @@ data:
       # The pg_vector_config parameter specifies the configuration for the Postgres pg_embedding extension
       index_store: PgVector
       pg_vector_config:
-        addr: postgres://indexify:changeme@terraform-20240123205236469200000012.cbieoeiuurr3.us-east-1.rds.amazonaws.com/indexify
+        addr: postgres://indexify:DATABASE_PASSWORD@DATABASE_URL/indexify #changeme
         m: 16
         efconstruction: 64
         efsearch: 40

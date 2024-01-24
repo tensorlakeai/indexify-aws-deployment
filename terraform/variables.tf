@@ -26,6 +26,6 @@ variable "indexify_db_password" {
 variable "indexify_s3_bucket_name" {
   description = "Indexify s3 bucket name that indexify server will use"
   type        = string
-  default     = "indexify-bucket-name2" # changeme
+  default     = "indexify-bucket-name" # changeme
   sensitive   = true
 }

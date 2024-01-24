@@ -30,9 +30,9 @@ spec:
           image: tensorlake/minilm-l6-extractor
           env:
             - name: AWS_SECRET_ACCESS_KEY
-              value: iUGW39NaEl5HCdD78DZ00TcqCEPeYtxfZfu7k4LV
+              value: changeme
             - name: AWS_ACCESS_KEY_ID
-              value: AKIA3FLD5UFGSLYRASMP
+              value: changeme
       nodeSelector:
         node_role: minilm_l6
       restartPolicy: Always

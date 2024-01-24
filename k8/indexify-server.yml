@@ -8,7 +8,7 @@ spec:
     - port: 8900
       targetPort: 8900
       protocol: TCP
-  type: NodePort
+  type: ClusterIP
   selector:
     app: indexify
 ---
@@ -43,11 +43,9 @@ spec:
               readOnly: true
           env:
             - name: AWS_SECRET_ACCESS_KEY
-              value: iUGW39NaEl5HCdD78DZ00TcqCEPeYtxfZfu7k4LV
+              value: changeme
             - name: AWS_ACCESS_KEY_ID
-              value: AKIA3FLD5UFGSLYRASMP
-          ports:
-            - containerPort: 8900
+              value: changeme
       nodeSelector:
         node_role: indexify
       restartPolicy: Always
