@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: coordinator
-          command: ["./indexify"]
+          command: ["indexify"]
           args:
             - coordinator
             - --config-path
@@ -44,6 +44,8 @@ spec:
             - mountPath: /indexify/config
               name: config
               readOnly: true
+            - mountPath: "/var/lib/state-storage"
+              name: state-storage-volume
       nodeSelector:
         node_role: indexify_coordinator
       restartPolicy: Always
@@ -54,3 +56,6 @@ spec:
             items:
               - key: "sample_config.yaml"
                 path: "indexify.yaml"
+        - name: state-storage-volume
+          hostPath:
+            path: /mnt/storage

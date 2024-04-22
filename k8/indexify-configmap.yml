@@ -8,9 +8,6 @@ data:
     # Network interface on which the server listens
     listen_if: 0.0.0.0
 
-    # Port on which the server listens
-    listen_port: 8900
-
     # Port on which the coordinator listens
     #coordinator_port: 8950
 
@@ -48,10 +45,18 @@ data:
         efconstruction: 64
         efsearch: 40
 
+    metadata_storage:
+      metadata_store: postgres
+      conn_url: postgres://indexify:DATABASE_PASSWORD@DATABASE_URL/indexify #changeme
+
     # If relative path is specified, it is relative to the project root directory
     # You should replace the values with your own values
 
+    seed_node: localhost:8970
     node_id: 0
     peers:
       - node_id: 0
         addr: localhost:8950
+
+    state_store:
+      path: /var/lib/state-storage

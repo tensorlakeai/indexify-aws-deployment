@@ -106,7 +106,7 @@ module "eks" {
       }
 
       labels = {
-        node_role = "indexify"
+        node_role = "indexify_ingestion_server"
       }
     }
 
@@ -115,7 +115,27 @@ module "eks" {
       max_size     = 2
       desired_size = 1
 
-      instance_types = ["t3.medium"]
+      instance_types = ["m5.2xlarge"]
+
+      pre_bootstrap_user_data = <<-EOT
+      mkfs -t ext4 /dev/nvme1n1
+      mkdir -p /mnt/storage
+      mount /dev/nvme1n1 /mnt/storage
+      chown ec2-user:ec2-user /mnt/storage
+      EOT
+
+      block_device_mappings = {
+        sdb = {
+          device_name = "/dev/sdb"
+          ebs = {
+            volume_size           = 30
+            volume_type           = "gp3"
+            iops                  = 3000
+            throughput            = 150
+            delete_on_termination = true
+          }
+        }
+      }
 
       tags = {
         Name = "indexify_coordinator_worker"
@@ -138,7 +158,7 @@ module "eks" {
       }
 
       labels = {
-        node_role = "minilm_l6"
+        node_role = "minilm_l6_extractor"
       }
     }
   }

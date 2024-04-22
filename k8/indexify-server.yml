@@ -4,19 +4,17 @@ metadata:
   namespace: indexify
   name: indexify-service
 spec:
+  type: NodePort
   ports:
     - port: 8900
-      targetPort: 8900
       protocol: TCP
-  type: ClusterIP
   selector:
     app: indexify
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: indexify
-  name: indexify-deployment
+  name: indexify
 spec:
   replicas: 1
   selector:
@@ -31,12 +29,14 @@ spec:
     spec:
       containers:
         - name: indexify
-          command: ["./indexify"]
+          command: ["indexify"]
           args:
             - server
             - --config-path
             - ./config/indexify.yaml
           image: tensorlake/indexify
+          ports:
+            - containerPort: 8900
           volumeMounts:
             - mountPath: /indexify/config
               name: config
@@ -45,9 +45,9 @@ spec:
             - name: AWS_SECRET_ACCESS_KEY
               value: changeme
             - name: AWS_ACCESS_KEY_ID
-              value: changeme
+              value: changeme       
       nodeSelector:
-        node_role: indexify
+        node_role: indexify_ingestion_server
       restartPolicy: Always
       volumes:
         - name: config
