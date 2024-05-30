@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: indexify
+  name: indexify-configmap
+data:
+  sample_config.yaml: |-
+    # Network interface on which the server listens
+    listen_if: 0.0.0.0
+
+    # Port on which the coordinator listens
+    coordinator_port: 8950
+
+    # Database URL for storing document and memory
+    # db_url: postgres://indexify:DATABASE_PASSWORD@DATABASE_URL/indexify #changeme
+    # db_url: postgresql://ps_user:SecurePassword@localhost:5432/ps_db
+    # db_url: postgresql://ps_user:SecurePassword@postgres:5432/ps_db
+    db_url: postgresql://indexify:SecurePassword@localhost.localstack.cloud:5432/ps_db
+
+    # Address on which the coordinator is available for the API server
+    # to query for executors
+    coordinator_addr: coordinator-service.indexify.svc.cluster.local:8950
+
+    raft_port: 8970
+
+    # Blob storage configuration for the service. It is used for storing
+    # raw data such as PDF, Images and Videos.
+    blob_storage:
+      backend: s3
+      s3:
+        # endpoint: http://127.0.0.1:9001
+        # endpoint: http://my-release-minio:9000
+        endpoint: https://localhost.localstack.cloud/
+        bucket: sample-bucket #changeme
+        region: us-east-1
+
+    # Vector index configuration for the service. The index_store parameter
+    # specifies the type of index to use. Currently, only Qdrant is supported.
+    #
+    # The db_url parameter specifies the database url used for persistence of
+    # metadata related to the indexed vectors and documents.
+    #
+    # The qdrant_config parameter specifies the configuration for the Qdrant
+    # service.
+    index_config:
+      # The pg_vector_config parameter specifies the configuration for the Postgres pg_embedding extension
+      index_store: PgVector
+      pg_vector_config:
+
+        addr: postgresql://ps_user:SecurePassword@postgres.indexify.svc.cluster.local:5432/ps_db #changeme
+        m: 16
+        efconstruction: 64
+        efsearch: 40
+
+    metadata_storage:
+      metadata_store: postgres
+      conn_url: postgresql://ps_user:SecurePassword@postgres:5432/ps_db
+
+    # If relative path is specified, it is relative to the project root directory
+    # You should replace the values with your own values
+
+    seed_node: localhost:8970
+    node_id: 0
+    peers:
+      - node_id: 0
+        addr: localhost:8950
+
+    state_store:
+      path: /var/lib/state-storage
