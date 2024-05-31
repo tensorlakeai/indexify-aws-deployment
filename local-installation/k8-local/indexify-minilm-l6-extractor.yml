@@ -44,11 +44,11 @@ spec:
         image: tensorlake/minilm-l6
         env:
         - name: AWS_ACCESS_KEY_ID
-          value: LKIAQAAAAAAAKY5FY2RO
+          value: changeme with your AWS values
         - name: AWS_SECRET_ACCESS_KEY
-          value: OhmKB4fcCvMfh2yqSvmGjD4eXwfkmw7tYHQxh+uZ
+          value: changeme with your AWS values
         - name: AWS_ENDPOINT
-          value: http://172.17.0.2:4566
+          value: http://<changeme>:4566
         - name: AWS_ALLOW_HTTP
           value: "1"
       restartPolicy: Always

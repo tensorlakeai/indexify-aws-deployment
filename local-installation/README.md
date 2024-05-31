@@ -334,3 +334,4 @@ For extra documentation and info, refer to the following links:
 - [Issue with Installing Packages with pip: Cargo, the Rust Package Manager, is Not Installed](https://stackoverflow.com/questions/71696582/issue-with-installing-packages-with-pip-cargo-the-rust-package-manager-is-no)
 - [OpenAI API Keys](https://platform.openai.com/api-keys)
 - [How to create a python virutal environment](https://python.land/virtual-environments/virtualenv)
+- [Recommended K8 CLI to use](https://k9scli.io/topics/install/)

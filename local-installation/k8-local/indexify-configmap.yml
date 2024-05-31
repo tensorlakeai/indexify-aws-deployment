@@ -12,10 +12,7 @@ data:
     coordinator_port: 8950
 
     # Database URL for storing document and memory
-    # db_url: postgres://indexify:DATABASE_PASSWORD@DATABASE_URL/indexify #changeme
-    # db_url: postgresql://ps_user:SecurePassword@localhost:5432/ps_db
-    # db_url: postgresql://ps_user:SecurePassword@postgres:5432/ps_db
-    db_url: postgresql://indexify:SecurePassword@localhost.localstack.cloud:5432/ps_db
+    db_url: postgresql://indexify:SecurePassword@localhost.localstack.cloud:5432/ps_db #changeme in case you use another credentials
 
     # Address on which the coordinator is available for the API server
     # to query for executors
@@ -28,10 +25,8 @@ data:
     blob_storage:
       backend: s3
       s3:
-        # endpoint: http://127.0.0.1:9001
-        # endpoint: http://my-release-minio:9000
         endpoint: https://localhost.localstack.cloud/
-        bucket: sample-bucket #changeme
+        bucket: sample-bucket #changeme in case you change s3 bucket name
         region: us-east-1
 
     # Vector index configuration for the service. The index_store parameter
@@ -47,14 +42,14 @@ data:
       index_store: PgVector
       pg_vector_config:
 
-        addr: postgresql://ps_user:SecurePassword@postgres.indexify.svc.cluster.local:5432/ps_db #changeme
+        addr: postgresql://ps_user:SecurePassword@postgres.indexify.svc.cluster.local:5432/ps_db #changeme in case you use another credentials
         m: 16
         efconstruction: 64
         efsearch: 40
 
     metadata_storage:
       metadata_store: postgres
-      conn_url: postgresql://ps_user:SecurePassword@postgres:5432/ps_db
+      conn_url: postgresql://ps_user:SecurePassword@postgres:5432/ps_db #changeme in case you use another credentials
 
     # If relative path is specified, it is relative to the project root directory
     # You should replace the values with your own values

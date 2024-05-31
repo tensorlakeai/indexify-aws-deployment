@@ -15,7 +15,6 @@ spec:
     spec:
       containers:
       - name: postgres
-        # image: 'postgres:14'
         image: 'ankane/pgvector'
         imagePullPolicy: IfNotPresent
         ports:
@@ -23,10 +22,3 @@ spec:
         envFrom:
         - configMapRef:
             name: postgres-secret
-      #   volumeMounts:
-      #   - mountPath: /var/lib/postgresql/data
-      #     name: postgresdata
-      # volumes:
-      # - name: postgresdata
-      #   persistentVolumeClaim:
-      #     claimName: postgres-volume-claim

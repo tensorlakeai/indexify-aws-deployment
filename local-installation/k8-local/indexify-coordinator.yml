@@ -29,10 +29,6 @@ spec:
     metadata:
       labels:
         app: coordinator
-    spec:
-      dnsConfig:
-        nameservers:
-        - 172.27.0.2
       containers:
       - name: coordinator
         command: ["indexify"]
