@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: indexify
+  namespace: {{ .Values.namespace }}
   name: coordinator-service
 spec:
   selector:
@@ -16,7 +16,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: indexify
+  namespace: {{ .Values.namespace }}
   name: coordinator
 spec:
   replicas: 1
@@ -37,7 +37,7 @@ spec:
         - coordinator
         - --config-path
         - ./config/indexify.yaml
-        image: tensorlake/indexify
+        image: {{ .Values.indexify.coordinator.image }}
         ports:
         - containerPort: 8950
         volumeMounts:
