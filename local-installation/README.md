@@ -19,8 +19,7 @@ This guide will walk you through setting up a local development environment for 
     - [Step 8: Create Local Indexify, Coordinator, and Extractor Installation](#step-8-create-local-indexify-coordinator-and-extractor-installation)
     - [Step 9: Start Basic Testing](#step-9-start-basic-testing)
   - [Helm Installation](#helm-installation)
-    - [Helm step 1: Install prerequisites](#helm-step-1-install-prerequisites)
-    - [Helm step 2: Indexify Helm chart installation](#helm-step-2-indexify-helm-chart-installation)
+    - [Helm step 1: run helm installation](#helm-step-1-run-helm-installation)
   - [Important Documents](#important-documents)
 
 ## About Indexify
@@ -346,31 +345,12 @@ By following these steps, you should have a fully functional local development e
 
 This is an fast, easy installation using helm, so in case you want to go more in deep about the tools installation please refer to the complete [Installation Steps](#installation-steps) guide above.
 
-### Helm step 1: Install prerequisites
-
-**Please follow the first 5 steps described above:**
-
-- [Step 1: Clone the Repository](#step-1-clone-the-repository)
-- [Step 2: Start Docker Desktop](#step-2-start-docker-desktop)
-- [Step 3: Create LocalStack Environment](#step-3-create-localstack-environment)
-- [Step 4: Configure AWS Credentials for LocalStack](#step-4-configure-aws-credentials-for-localstack)
-- [Step 5: Create Indexify Namespace](#step-5-create-indexify-namespace)
-
-### Helm step 2: Indexify Helm chart installation
+### Helm step 1: run helm installation
 
 **Go inside `local-installation/indexify-helm-chart/` directory**
 
 ```sh
 cd local-installation/indexify-helm-chart/
-```
-
-**Change all the `Changme` values inside `values.yml` file based on your LocalStack AWS values (step 4) and LocalStack IP address(step 3):**
-
-```json
-  aws:
-    accessKeyId: "changeme with your AWS values"
-    secretAccessKey: "changeme with your AWS values"
-    endpoint: "http://<changeme>:4566"
 ```
 
 **Update dependencies and run Helm installation command**:

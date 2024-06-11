@@ -25,7 +25,7 @@ data:
     blob_storage:
       backend: s3
       s3:
-        endpoint: {{ .Values.indexify.aws.endpoint }}
+        endpoint: http://indexify-app-localstack.indexify:4566
         bucket: sample-bucket
         region: us-east-1
 

@@ -44,7 +44,6 @@ spec:
           name: config
           readOnly: true
         env:
-        env:
         - name: AWS_ACCESS_KEY_ID
           value: {{ .Values.indexify.aws.accessKeyId }}
         - name: AWS_SECRET_ACCESS_KEY
