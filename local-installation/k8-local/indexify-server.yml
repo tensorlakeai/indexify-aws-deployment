@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: indexify
+  name: indexify-service
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8900
+    targetPort: 8900
+  selector:
+    app: indexify
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: indexify
+  namespace: indexify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: indexify
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: indexify
+    spec:
+      containers:
+      - name: indexify
+        command: ["indexify"]
+        args:
+        - server
+        - --config-path
+        - ./config/indexify.yaml
+        image: tensorlake/indexify
+        ports:
+        - containerPort: 8900
+        volumeMounts:
+        - mountPath: /indexify/config
+          name: config
+          readOnly: true
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: changeme with your AWS values
+        - name: AWS_SECRET_ACCESS_KEY
+          value: changeme with your AWS values
+        - name: AWS_ENDPOINT
+          value: http://<changeme>:4566
+        - name: AWS_ALLOW_HTTP
+          value: "1"
+      restartPolicy: Always
+      volumes:
+      - name: config
+        configMap:
+          name: indexify-configmap
+          items:
+          - key: "sample_config.yaml"
+            path: "indexify.yaml"

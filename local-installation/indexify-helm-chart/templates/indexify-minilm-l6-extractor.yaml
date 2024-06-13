@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: minilm-l6-extractor-service
+spec:
+  type: NodePort
+  ports:
+  - port: 9501
+    protocol: TCP
+  selector:
+    app: minilm-l6-extractor
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: minilm-l6-extractor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minilm-l6-extractor
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minilm-l6-extractor
+    spec:
+      containers:
+      - name: minilm-l6-extractor
+        command: ["indexify-extractor"]
+        args:
+        - join-server
+        - --coordinator-addr
+        - coordinator-service.{{ .Values.namespace }}.svc.cluster.local:8950
+        - --ingestion-addr
+        - indexify-service.{{ .Values.namespace }}.svc.cluster.local:8900
+        - --advertise-addr
+        - minilm-l6-extractor-service.{{ .Values.namespace }}.svc.cluster.local:9501
+        - --listen-port
+        - "9501"
+        image: {{ .Values.indexify.minilmExtractor.image }}
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: {{ .Values.indexify.aws.accessKeyId }}
+        - name: AWS_SECRET_ACCESS_KEY
+          value: {{ .Values.indexify.aws.secretAccessKey }}
+        - name: AWS_ENDPOINT
+          value: {{ .Values.indexify.aws.endpoint }}
+        - name: AWS_ALLOW_HTTP
+          value: "1"
+      restartPolicy: Always

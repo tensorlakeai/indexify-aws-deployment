@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-s3-bucket-job
+  labels:
+    app: create-s3-bucket
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-s3-bucket
+        image: amazon/aws-cli
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          sleep 30
+          export AWS_ACCESS_KEY_ID={{ .Values.localstack.config.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY={{ .Values.localstack.config.AWS_SECRET_ACCESS_KEY }}
+          export AWS_DEFAULT_REGION={{ .Values.localstack.config.DEFAULT_REGION }}
+          export PAGER=
+
+          # Configure AWS CLI to use LocalStack
+          export AWS_ENDPOINT_URL=http://indexify-app-localstack.indexify:4566
+
+          # Create an S3 bucket
+          aws --endpoint-url=$AWS_ENDPOINT_URL s3api create-bucket --bucket sample-bucket
+          echo "S3 Configured"
+      restartPolicy: OnFailure

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: indexify
+  name: ingress-indexify
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: indexify.local
+    http:
+      paths:
+      - path: /indexify(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: indexify-service
+            port:
+              number: 8900
+      - path: /localstack(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: {{ .Release.Name }}-localstack
+            port:
+              number: 4566

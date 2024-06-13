@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: coordinator-service
+spec:
+  selector:
+    app: coordinator
+  ports:
+  - name: coordinator-http-port
+    protocol: TCP
+    port: 8950
+    targetPort: 8950
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: coordinator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coordinator
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: coordinator
+    spec:
+      containers:
+      - name: coordinator
+        command: ["indexify"]
+        args:
+        - coordinator
+        - --config-path
+        - ./config/indexify.yaml
+        image: {{ .Values.indexify.coordinator.image }}
+        ports:
+        - containerPort: 8950
+        volumeMounts:
+        - mountPath: /indexify/config
+          name: config
+          readOnly: true
+        - mountPath: "/var/lib/state-storage"
+          name: state-storage-volume
+      restartPolicy: Always
+      volumes:
+      - name: config
+        configMap:
+          name: indexify-configmap
+          items:
+          - key: "sample_config.yaml"
+            path: "indexify.yaml"
+      - name: state-storage-volume
+        hostPath:
+          path: /mnt/storage
