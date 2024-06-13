@@ -27,19 +27,7 @@ spec:
           # Configure AWS CLI to use LocalStack
           export AWS_ENDPOINT_URL=http://indexify-app-localstack.indexify:4566
 
-          # Crear S3 bucket
+          # Create an S3 bucket
           aws --endpoint-url=$AWS_ENDPOINT_URL s3api create-bucket --bucket sample-bucket
           echo "S3 Configured"
-
-          # Crear un nuevo usuario IAM
-          # aws --endpoint-url=$AWS_ENDPOINT_URL iam create-user --user-name sample-user
-
-          # Crear claves de acceso para el usuario
-          # aws --endpoint-url=$AWS_ENDPOINT_URL iam create-access-key --user-name sample-user > /tmp/sample-user-access-keys.json
-
-          # Leer las claves y crear un secreto
-          # ACCESS_KEY_ID=$(jq -r .AccessKey.AccessKeyId < /tmp/sample-user-access-keys.json)
-          # SECRET_ACCESS_KEY=$(jq -r .AccessKey.SecretAccessKey < /tmp/sample-user-access-keys.json)
-
-          # kubectl create secret generic sample-user-keys --from-literal=aws_access_key_id=$ACCESS_KEY_ID --from-literal=aws_secret_access_key=$SECRET_ACCESS_KEY -n indexify
       restartPolicy: OnFailure

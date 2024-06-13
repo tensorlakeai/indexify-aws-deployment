@@ -38,7 +38,7 @@ This guide will walk you through setting up a local development environment for 
 
 ## Installation Steps
 
-This is the complete installation using kubernetes, helm and localstack, please do it in case you want to know the complete process and setup for indexify. In case you just want to go and run, please follow the new [Helm installation guide](#helm-installation)
+This is the complete installation using kubernetes, helm and localstack, please do it in case you want to know the complete process and setup for indexify. In case you just want to go and run in an easiest way, please follow the new [Helm installation guide](#helm-installation)
 
 ### Step 1: Clone the Repository
 
@@ -46,7 +46,7 @@ First, clone this repository to your local machine:
 
 ```sh
 git clone https://github.com/tensorlakeai/indexify-aws-deployment
-cd local-installation
+cd indexify-aws-deployment/local-installation
 ```
 
 ### Step 2: Start Docker Desktop
